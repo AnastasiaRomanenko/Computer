@@ -127,4 +127,28 @@ When the power button is pressed, the following events take place:
 
         * The UEFI detects storage devices, initializes their controllers, and prepares them for booting the operating system.
 
+9. Boot process
 
+    After the successful POST completion UEFI checks the __boot order__ configured in its settings. This order specifies the sequence of devices that UEFI will check for a bootable OS. This includes internal storage (like an SSD), external USB drives, and network boot options. UEFI scans each device in the configured order for a __boot partition__, which is a volume of the computer that contains the system files used to start the operating system. In my case the primary internal storage device is the NVMe SSD.
+
+    An __NVMe SSD (Non-Volatile Memory Express Solid State Drive)__ is a type of SSD that uses the NVMe protocol to communicate with the computer.
+    
+    __NVMe (Non-Volatile Memory Express)__ is a protocol designed to use the PCIe bus to connect SSD storage to CPUs. 
+    
+    __Peripheral Component Interconnect Express (PCIe)__ is a high-speed interface standard designed for connecting various hardware components (SSDs for example) to a computer's motherboard. 
+
+    When a bootable device is found, UEFI looks for the bootloader. The __bootloader__ is a small program that loads the operating system. The bootloader is stored on a special boot partition, such as GUID (Globally Unique IDentifier) Partition Table (GPT).
+
+    The __GUID Partition Table (GPT)__ is a standard for the layout of partition tables of a SSD, using globally unique identifiers (GUIDs). 
+    
+    A __partition table__ is a table maintained on a disk by the operating system that outlines and describes the partitions on that disk.
+    
+    __GUID__ is a 128-bit label used for information in computer systems.
+    
+    GPT stores boot information across multiple sectors.    
+
+    UEFI reads the boot information from the GPT, which points to the bootloader file. On Mac systems it is the __boot.efi file__ located in the EFI system partition (ESP).
+
+    The __EFI system partition (ESP)__ is a partition on a SSD that is used by computers that have UEFI. An ESP contains a _boot.efi_, device driver files for hardware devices present in a computer and used by the UEFI at boot time, system utility programs that are intended to be run before an operating system is booted and data files such as error logs.
+
+    UEFI loads the boot.efi file into memory and transfers control to it. This file is responsible for verification and loading of the operating system kernel.
