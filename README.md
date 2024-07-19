@@ -137,6 +137,14 @@ When the power button is pressed, the following events take place:
     
     __Peripheral Component Interconnect Express (PCIe)__ is a high-speed interface standard designed for connecting various hardware components (SSDs for example) to a computer's motherboard. 
 
+    UEFI uses various protocols defined by the UEFI specification to interact with hardware and perform tasks such as file reading.
+
+    * UEFI initializes the Block I/O Protocol to communicate with the NVMe SSD at the block level.
+
+    * The Simple File System Protocol provides the necessary interfaces to navigate and read files from supported filesystems, like FAT32. 
+
+    __FAT32__ is the 32-bit version of the file allocation table (FAT) file system.
+
     When a bootable device is found, UEFI looks for the bootloader. The __bootloader__ is a small program that loads the operating system. The bootloader is stored on a special boot partition, such as GUID (Globally Unique IDentifier) Partition Table (GPT).
 
     The __GUID Partition Table (GPT)__ is a standard for the layout of partition tables of a SSD, using globally unique identifiers (GUIDs). 
@@ -147,8 +155,24 @@ When the power button is pressed, the following events take place:
     
     GPT stores boot information across multiple sectors.    
 
-    UEFI reads the boot information from the GPT, which points to the bootloader file. On Mac systems it is the __boot.efi file__ located in the EFI system partition (ESP).
+    UEFI reads the boot information from the GPT, which points to the bootloader file, located in the EFI system partition (ESP). On Mac systems it is the __boot.efi file__ located in the EFI system partition (ESP).
 
-    The __EFI system partition (ESP)__ is a partition on a SSD that is used by computers that have UEFI. An ESP contains a _boot.efi_, device driver files for hardware devices present in a computer and used by the UEFI at boot time, system utility programs that are intended to be run before an operating system is booted and data files such as error logs.
+    The __EFI system partition (ESP)__ is a partition (in my case) on a NVMe SSD that is used by computers that have UEFI. An ESP contains a bootloader file, device driver files for hardware devices present in a computer and used by the UEFI at boot time, system utility programs that are intended to be run before an operating system is booted and data files such as error logs.
+    The Simple File System Protocol mounts the ESP, so that its contents arw aaccessible to UEFI. UEFI navigates the directory, locating the EFI/APPLE/boot.efi file - a bootloader file.
 
-    UEFI loads the boot.efi file into memory and transfers control to it. This file is responsible for verification and loading of the operating system kernel.
+    The firmware uses the Simple File System Protocol to read the contents of boot.efi, transferring the binary data into a designated area of RAM, reserved for boot operations, so that it doesn't conflict with other memory areas reserved for different purposes. UEFI prepares the system to execute the boot.efi file by setting up necessary memory address spaces and system services. This file is responsible for verification and loading of the operating system kernel.
+
+10. Kernel loading:
+
+    1. boot.efi ensures the CPU is in the correct operating mode, configures essential CPU registers, initializes memory controllers and sets up memory management structures.
+
+    2. initializes necessary peripherals and I/O devices required for the boot process, ensures that essential components such as the display, keyboard, and storage devices are ready for use.
+    3. performs cryptographic checks to verify the integrity of the macOS kernel. Ensures that the kernel has not been tampered with and is signed by Apple.
+    4. utilizes Apple's Secure Boot process to ensure that only trusted software components are executed. Verifies the digital signature of the kernel and other critical boot components.
+    5. locates the macOS kernel file on the system volume. The kernel file is typically named __mach_kernel__. The file resides on the APFS (Apple File System) formatted volume, which is the primary filesystem for macOS.
+    6. reads the kernel file from the APFS volume into a specific region of system memory. Uses filesystem protocols to navigate the APFS structure and access the kernel file.
+    7. sets up data structures that the kernel will use during its execution, prepares the boot arguments and environment variables that need to be passed to the kernel.
+    8. loads kernel extensions (kexts) required for the kernel to interface with hardware. These extensions provide drivers and additional functionality needed during the early stages of kernel execution.
+    9. configures the system memory map, detailing the layout of RAM regions and their purposes. Ensures that the kernel has a clear understanding of the available RAM and its allocation.
+    10. performs any final preparations needed before transferring control to the kernel. Ensures that all necessary components and data are correctly loaded and configured.
+    11. transfers control to the entry point of the macOS kernel. This is a specific address in RAM where the kernel begins execution. The jump involves updating the CPU instruction pointer to the kernel’s starting address.
