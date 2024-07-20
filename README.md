@@ -10,7 +10,7 @@ When the power button is pressed, the following events take place:
 2. Electrical Circuit Closure:
 
     1. The closure of the switch closes an electrical circuit on the motherboard.
-    2. This circuit is connected to a __General-Purpose Input/Output (GPIO) pin__, which is used to detect the power button press, on the __System Management Controller (SNC)__, which is a specialized microcontroller responsible for managing power functions.   
+    2. This circuit is connected to a __General-Purpose Input/Output (GPIO) pin__, which is used to detect the power button press, on the __System Management Controller (SMC)__, which is a specialized microcontroller responsible for managing power functions.   
     GPIO pins can be configured as input or output pins. In this case, the pin is configured as an _input_ to detect the state of the power button.    
 
         GPIO pins are typically configured with a _pull-up resistor_. It ensures that the GPIO pin is held at a _high voltage level (logical 1)_ when the button is not pressed.
@@ -155,10 +155,10 @@ When the power button is pressed, the following events take place:
     
     GPT stores boot information across multiple sectors.    
 
-    UEFI reads the boot information from the GPT, which points to the bootloader file, located in the EFI system partition (ESP). On Mac systems it is the __boot.efi file__ located in the EFI system partition (ESP).
+    UEFI reads the boot information from the GPT, which points to the bootloader file, located in the EFI system partition (ESP). 
 
     The __EFI system partition (ESP)__ is a partition (in my case) on a NVMe SSD that is used by computers that have UEFI. An ESP contains a bootloader file, device driver files for hardware devices present in a computer and used by the UEFI at boot time, system utility programs that are intended to be run before an operating system is booted and data files such as error logs.
-    The Simple File System Protocol mounts the ESP, so that its contents arw aaccessible to UEFI. UEFI navigates the directory, locating the EFI/APPLE/boot.efi file - a bootloader file.
+    The Simple File System Protocol mounts the ESP, so that its contents are aaccessible to UEFI. UEFI navigates the directory, locating the EFI/APPLE/boot.efi file - a bootloader file.
 
     The firmware uses the Simple File System Protocol to read the contents of boot.efi, transferring the binary data into a designated area of RAM, reserved for boot operations, so that it doesn't conflict with other memory areas reserved for different purposes. UEFI prepares the system to execute the boot.efi file by setting up necessary memory address spaces and system services. This file is responsible for verification and loading of the operating system kernel.
 
