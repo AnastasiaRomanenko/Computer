@@ -176,3 +176,8 @@ When the power button is pressed, the following events take place:
     9. configures the system memory map, detailing the layout of RAM regions and their purposes. Ensures that the kernel has a clear understanding of the available RAM and its allocation.
     10. performs any final preparations needed before transferring control to the kernel. Ensures that all necessary components and data are correctly loaded and configured.
     11. transfers control to the entry point of the macOS kernel. This is a specific address in RAM where the kernel begins execution. The jump involves updating the CPU instruction pointer to the kernel’s starting address.
+
+
+## Diagram
+
+![Diagram.png](Diagram.png)
