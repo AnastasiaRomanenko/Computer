@@ -181,3 +181,35 @@ When the power button is pressed, the following events take place:
 ## Diagram
 
 ![Diagram.png](Diagram.png)
+
+
+11. MacOS kernel
+
+    The __kernel__ is the part of an operating system that loads first.
+
+    __XNU__ ("X is Not Unix") is the computer operating system (OS) kernel developed for use in the macOS operating system.
+
+    XNU is a hybrid kernel, containing features of both monolithic kernels and microkernels.
+
+    A __monolithic kernel__ is an operating system architecture with the entire operating system running in kernel space. Monolithic architecture kernel examples: Unix (including Linux), MS-DOS, Windows 9x.
+    
+    __MS-DOS (Microsoft Disk Operating System)__ is an operating system for x86-based personal computers mostly developed by Microsoft.
+
+    __Microkernel__ is the near-minimum amount of software that can provide the mechanisms needed to implement an operating system. 
+
+    ![OS differences](os.jpeg)
+
+    Parts of XNU:
+    * code from an old computer architecture system called _Mach_. This code is responsible for some basic functions within the Mac computer, including virtual memory management and multitasking. The code also gives the Mac OS the authority to reduce the CPU's processing speed should it begin to overheat.
+    
+    * Input-Output (I/O) Kit. It relies on a specialized, limited version of the C++ programming language to control device drivers. The I/O Kit enables a Mac computer to handle several devices over different technologies at the same time. 
+    
+    * the Berkeley Software Distribution (BSD) derivative for UNIX. This part of the kernel is in charge of maintaining system securities and permissions. While logging in to a Mac computer the BSD determines the level of access. An administrator would have nearly free access and could download or delete programs and other data. Other user levels might not have these permissions. This lets the administrator define which processes a normal user can and can't access. The BSD element of the XNU kernel also helps synchronize processes in the Mac computer.
+    
+    * the core services layer and the application services layer. 
+    Together with the kernel and hardware, these layers form a stack. 
+        1. At the bottom - the hardware and firmware. 
+        2. The next level up - macOS kernel. 
+        3. Then - the core services layer. It consists of multiple frameworks that allow the computer to process tasks.
+        4. Then - the application services layer. It is the basic graphic user interface (GUI) system and also acts as a communications channel between various applications, allowing them to interact.
+        5. At the top - the applications. They are computer programs designed to carry out specific tasks other than tasks relating to the operation of the computer itself, typically to be used by end-users. 
