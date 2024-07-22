@@ -213,3 +213,35 @@ When the power button is pressed, the following events take place:
         3. Then - the core services layer. It consists of multiple frameworks that allow the computer to process tasks.
         4. Then - the application services layer. It is the basic graphic user interface (GUI) system and also acts as a communications channel between various applications, allowing them to interact.
         5. At the top - the applications. They are computer programs designed to carry out specific tasks other than tasks relating to the operation of the computer itself, typically to be used by end-users. 
+
+12. Low-level initialization phase
+    
+    * CPU.
+        * The kernel detect, enables and configures features of the CPU.
+        *  Initializes CPU control registers (CR0, CR3, CR4) to configure the CPU's operating modes and features.
+        * Initializes and configures the Advanced Programmable Interrupt Controller (APIC) to handle hardware interrupts.
+
+    * Memory management.
+        * The kernel sets up initial page tables to manage virtual memory. These tables map virtual addresses to physical addresses and are used by the CPU's memory management unit (MMU) to translate addresses during execution.
+        * Defines the layout of the virtual address space (regions for kernel code, kernel data, user space and memory-mapped I/O).
+        * Maps essential regions of memory, such as the kernel code and data, into the address space. 
+        * Marks regions of memory reserved for specific purposes.
+        * Configures memory protection mechanisms to prevent unauthorized access to critical memory regions (setting appropriate access permissions for different memory areas - read/write/execute).
+
+    *  Hardware Abstraction Layer (HAL).
+        * The kernel detects and initializes platform-specific hardware components. 
+        * Initializes services provided by UEFI.
+        * Initializes system buses.
+        * Enumerates devices connected to the system buses.
+
+    * Basic I/O
+        * Configures basic I/O ports used for communication with hardware devices.
+        * Maps I/O-mapped devices into the address space, allowing the kernel to access and control these devices directly.
+
+    * Interrupt Vector Table
+        * The kernel initializes the Interrupt Vector Table, which defines the handlers for different hardware interrupts. Each interrupt vector points to a specific handler function that the kernel executes when the corresponding interrupt occurs.
+        * Configures the interrupt mask to enable or disable specific hardware interrupts during initialization.
+
+    * Timers
+        * The kernel initializes high-resolution system timers used for scheduling.
+        * Initializes the real-time clock to keep track of the current date and time. 
